@@ -1,0 +1,8 @@
+{
+  // Minimal config so Cloudflare can import this repository and deploy it as a plain
+  // Worker with no build step. "main" points at the single source file; nothing else
+  // is required because the relay has no dependencies.
+  "name": "qv-relay",
+  "main": "worker.js",
+  "compatibility_date": "2026-01-01"
+}
