@@ -1,8 +1,11 @@
 {
-  // Minimal config so Cloudflare can import this repository and deploy it as a plain
-  // Worker with no build step. "main" points at the single source file; nothing else
-  // is required because the relay has no dependencies.
+  // One Worker: relay (relay.<domain>, ?url=, /ws/binance, /health) + static website (./site) on every other host.
   "name": "qv-relay",
   "main": "index.js",
-  "compatibility_date": "2026-01-01"
+  "compatibility_date": "2026-01-01",
+  "assets": {
+    "directory": "./site",
+    "binding": "ASSETS",
+    "run_worker_first": true
+  }
 }

@@ -18,7 +18,7 @@
 //   • per-host cache TTL (quotes must not be cached for a minute) and per-host headers.
 // Usage:  GET  https://<relay>/?url=<encoded https url>      GET /health      WS /ws/binance
 
-const VERSION = "2.0";
+const VERSION = "2.1";   // 2.1: also serves the static site (./site) on non-relay hosts
 
 // host → policy.  ttl: edge cache seconds (0 = never cache).  ref: Referer to send.  auth: forward Authorization.
 const POLICY = {
@@ -68,9 +68,16 @@ function withCors(body, init) {
 }
 
 export default {
-  async fetch(request) {
-    if (request.method === "OPTIONS") return withCors(null, { status: 204 });
+  async fetch(request, env) {
     const url = new URL(request.url);
+
+    // The same Worker serves the website (./site, via the ASSETS binding) on every host that is not the relay:
+    //   relay.<domain>, any ?url= call and the /ws/* routes stay relay-only; everything else is a static file.
+    const isRelay = url.hostname.startsWith("relay.") || url.searchParams.has("url") || !!WS_ROUTES[url.pathname]
+      || (request.method === "OPTIONS");
+    if (!isRelay && url.pathname !== "/health" && env && env.ASSETS) return env.ASSETS.fetch(request);
+
+    if (request.method === "OPTIONS") return withCors(null, { status: 204 });
 
     // health / capability probe (used by the app's relay tester)
     if (url.pathname === "/health") {

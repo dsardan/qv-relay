@@ -10,3 +10,9 @@ Cloudflare Worker relay for the QuantView / QuantEdge app (CORS + allow-list, **
 Deploy: Cloudflare → Workers → import this repo (`wrangler.jsonc`, main `index.js`). Test offline: `node test.mjs`.
 In the app: Σ-panel → relay address (`qe_relay`), default `https://relay.futuretrainingnow.com`.
 Caveat: Binance may still refuse some Cloudflare egress regions (HTTP 451); the app then falls back to Yahoo.
+
+## Website (v2.1)
+`site/` is served by the same Worker on every host except `relay.*` (static assets binding `ASSETS`, `run_worker_first`):
+`/` landing (ru/he/en), `/me/` author, `/privacy/`, `/app/` web version of QuantView, `/download/quantview.apk`.
+Custom domains to attach to the Worker: `futuretrainingnow.com` (site) and `relay.futuretrainingnow.com` (relay).
+Update the APK/web app: copy the new files into `site/download/` and `site/app/`, bump `QV_META` and the SHA-256 in `site/index.html`.

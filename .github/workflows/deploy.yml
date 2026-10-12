@@ -9,7 +9,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: node test.mjs
-      - uses: cloudflare/wrangler-action@v3
+      - name: Deploy (only when the Cloudflare secrets are configured)
+        if: env.CF_TOKEN != ''
+        env:
+          CF_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
