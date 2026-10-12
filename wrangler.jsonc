@@ -3,6 +3,11 @@
   "name": "qv-relay",
   "main": "index.js",
   "compatibility_date": "2026-01-01",
+  // Custom domains are attached automatically on deploy (zone must be in this Cloudflare account).
+  "routes": [
+    { "pattern": "futuretrainingnow.com", "custom_domain": true },
+    { "pattern": "relay.futuretrainingnow.com", "custom_domain": true }
+  ],
   "assets": {
     "directory": "./site",
     "binding": "ASSETS",

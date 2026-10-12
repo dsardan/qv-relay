@@ -1,5 +1,7 @@
 # qv-relay
 
+[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/dsardan/qv-relay)
+
 Cloudflare Worker relay for the QuantView / QuantEdge app (CORS + allow-list, **not** an open proxy).
 
 - `GET /?url=<encoded https url>` — fetch an allow-listed host (see `POLICY` in `index.js`; per-host cache TTL, Referer, Authorization only for T-Bank).
